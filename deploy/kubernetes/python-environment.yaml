@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: python-base
+  namespace: test
+spec:
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: python-base
+    spec:
+      containers:
+      - name: python-base
+        image: siangyeh8818/python-base-environment:latest
+        imagePullPolicy: Always
+        command: 
+        - sleep
+        - inf
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: time
+      volumes:
+      - name: time
+        hostPath:
+          path: /etc/localtime
